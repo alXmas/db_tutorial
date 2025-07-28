@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include "input_buffer.h"
-#include "meta_command.h"
+#include "command.h"
+#include "query.h"
 
-void call_metada_command(InputBuffer* input_buffer) {
-  MetaCommand command = do_meta_command(input_buffer);
+void call_command(InputBuffer* input_buffer) {
+  Command command = build(input_buffer);
 
   switch (command) {
     case EXIT:
@@ -26,7 +27,17 @@ int main() {
     read_input(input_buffer);
 
     if ((input_buffer->buffer[0]) == '.') {
-      call_metada_command(input_buffer);
+      call_command(input_buffer);
+    } else {
+      Query* query = build_query(input_buffer);
+      printf("Query type: %d\n", query->type);
+      printf("Query body: %s\n", query->body);
+
+      if (query->type == UNKNOWN) {
+        printf("Unrecognized command: %s\n", query->body);
+      }
+
+      free_query(query);
     }
   }
 }

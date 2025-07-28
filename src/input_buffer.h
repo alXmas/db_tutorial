@@ -1,6 +1,8 @@
 #ifndef INPUT_BUFFER_H
 #define INPUT_BUFFER_H
 
+#include <stddef.h>
+
 typedef struct {
   char* buffer;
   size_t buffer_length;
